@@ -1,5 +1,62 @@
 namespace Hooks
 {
+	class hkGetDLCMasterFile
+	{
+	private:
+		static const char* GetDLCMasterFile(std::uint32_t a_index)
+		{
+			switch (a_index)
+			{
+			case 0:
+				return "Dawnguard.esm";
+			case 1:
+				return "Hearthfires.esm";
+			case 2:
+				return "Dragonborn.esm";
+			case 3:
+				return "Skyblivion.esm";
+			default:
+				return nullptr;
+			}
+		}
+
+		inline static REL::Hook _GetDLCMasterFile{ REL::ID(441529), 0x2AB, GetDLCMasterFile };
+	};
+
+	class hkIsDLCMasterFile
+	{
+	private:
+		static bool IsDLCMasterFile(const char* a_esmName)
+		{
+			if (!_stricmp("Skyblivion.esm", a_esmName))
+				return true;
+			return _IsDLCMasterFile(a_esmName);
+		}
+
+		inline static REL::Hook _IsDLCMasterFile{ REL::ID(442522), 0x1C2, IsDLCMasterFile };
+	};
+
+	class hkIsDLCMasterOrCCFile
+	{
+	private:
+		static bool IsDLCMasterOrCCFile(const char* a_fileName)
+		{
+			if (!_stricmp("Skyblivion.esm", a_fileName))
+				return true;
+			return _IsDLCMasterOrCCFile0(a_fileName);
+		}
+
+		inline static REL::Hook _IsDLCMasterOrCCFile0{ REL::ID(441531), 0x330, IsDLCMasterOrCCFile };
+		inline static REL::Hook _IsDLCMasterOrCCFile1{ REL::ID(13798), 0x054, IsDLCMasterOrCCFile };
+		inline static REL::Hook _IsDLCMasterOrCCFile2{ REL::ID(418951), 0x038, IsDLCMasterOrCCFile };
+		inline static REL::Hook _IsDLCMasterOrCCFile3{ REL::ID(442209), 0x077, IsDLCMasterOrCCFile };
+		inline static REL::Hook _IsDLCMasterOrCCFile4{ REL::ID(442571), 0x21E, IsDLCMasterOrCCFile };
+		inline static REL::Hook _IsDLCMasterOrCCFile5{ REL::ID(442571), 0x428, IsDLCMasterOrCCFile };
+		inline static REL::Hook _IsDLCMasterOrCCFile6{ REL::ID(442776), 0x0A2, IsDLCMasterOrCCFile };
+		inline static REL::Hook _IsDLCMasterOrCCFile7{ REL::ID(442776), 0x152, IsDLCMasterOrCCFile };
+	};
+
+	/*
 	class hkGetFormByNumericID
 	{
 	public:
@@ -193,10 +250,11 @@ namespace Hooks
 
 		inline static REL::Hook _ClearPartialAliasFill{ REL::ID(25048), 0x761, ClearPartialAliasFill };
 	};
+	*/
 }
 
 SKSE_PLUGIN_LOAD(const SKSE::LoadInterface* a_skse)
 {
-	SKSE::Init(a_skse, {.trampoline = true });
+	SKSE::Init(a_skse, { .trampoline = true });
 	return true;
 }
